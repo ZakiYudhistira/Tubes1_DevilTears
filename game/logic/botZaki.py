@@ -8,7 +8,6 @@ from ..util import get_direction
 
 class BotZaki(BaseLogic):
     def __init__(self):
-        self.directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         self.goal_position: Optional[Position] = None
         self.current_direction = 0
     
@@ -52,35 +51,40 @@ class BotZaki(BaseLogic):
     def next_move(self, board_bot : GameObject, board: Board):
         props = board_bot.properties
         current_position = board_bot.position
-        # Analyze new state
+        # Finding each distance
         reset_coor = self.getResetButton(board)
         reset_distance = self.getDistance(reset_coor, board_bot)
 
         diamond_coor = self.getNearestDiamonds(board_bot, board)
         diamond_distance = self.getDistance(diamond_coor, board_bot)
+        
+        base = board_bot.properties.base
+        base_distance = abs(base.x - board_bot.position.x) + abs(base.y - board_bot.position.y)
 
-        base_coor = board_bot.properties.base
-        base_distance = abs(base_coor.x - board_bot.position.x) + abs(base_coor.y - board_bot.position.y)
-
-        if props.diamonds == 5:
-            # Move to base
-            base = board_bot.properties.base
-            self.goal_position = base
-        elif props.diamonds == 0:
-            if diamond_distance > reset_distance:
-                self.goal_position = reset_coor.position
+        # logic
+        if board_bot.properties.milliseconds_left//1000 - 2 > base_distance:
+            if props.diamonds == 5:
+                # Move to base
+                self.goal_position = base
+            elif props.diamonds == 0:
+                if diamond_distance > reset_distance:
+                    self.goal_position = reset_coor.position
+                else:
+                    self.goal_position = diamond_coor.position
+            elif props.diamonds == 3:
+                if diamond_distance > base_distance and reset_distance > base_distance:
+                    self.goal_position = base
+                elif diamond_distance > reset_distance:
+                    self.goal_position = reset_coor.position
+                else:
+                    self.goal_position = diamond_coor.position
             else:
-                self.goal_position = diamond_coor.position
-        elif props.diamonds == 3:
-            if diamond_distance > base_distance and reset_distance > base_distance:
-                self.goal_position = base_coor
-            else:
-                self.goal_position = diamond_coor.position
+                if reset_distance < diamond_distance:
+                    self.goal_position = reset_coor.position
+                else:
+                    self.goal_position = diamond_coor.position
         else:
-            if reset_distance < diamond_distance:
-                self.goal_position = reset_coor.position
-            else:
-                self.goal_position = diamond_coor.position
+            self.goal_position = base
 
         delta_x, delta_y = get_direction(
             current_position.x,
