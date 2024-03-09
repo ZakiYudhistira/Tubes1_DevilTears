@@ -19,29 +19,28 @@ class BotZaki(BaseLogic):
         # Retrieve the nearest diamond coordinate
         if board_bot.properties.diamonds == 4:
             array_diamond = [diamonds for diamonds in board.diamonds if diamonds.properties.points == 1]
-            nearest = array_diamond[0]
-            tot = self.getDistance(array_diamond[0], board_bot)
+            nearestDiamond = array_diamond[0]
+            nearestDistance = self.getDistance(array_diamond[0], board_bot)
             for i in range(1, len(array_diamond)):
-                if self.getDistance(array_diamond[i], board_bot) < tot:
-                    tot = self.getDistance(array_diamond[i], board_bot)
-                    nearest = array_diamond[i]
-            return nearest
+                if self.getDistance(array_diamond[i], board_bot) < nearestDistance:
+                    nearestDistance = self.getDistance(array_diamond[i], board_bot)
+                    nearestDiamond = array_diamond[i]
         else:
             array_diamond = [diamonds for diamonds in board.diamonds]
-            nearest = array_diamond[0]
-            tot = self.getDistance(array_diamond[0], board_bot)
+            nearestDiamond = array_diamond[0]
+            nearestDistance = self.getDistance(array_diamond[0], board_bot)
             for i in range(1, len(array_diamond)):
-                if self.getDistance(array_diamond[i], board_bot) < tot:
-                    tot = self.getDistance(array_diamond[i], board_bot)
-                    nearest = array_diamond[i]
-            return nearest
+                if self.getDistance(array_diamond[i], board_bot) < nearestDistance:
+                    nearestDistance = self.getDistance(array_diamond[i], board_bot)
+                    nearestDiamond = array_diamond[i]
+        return nearestDiamond
     
-    def getNearestTeleporter(self, board_bot : GameObject, board : Board):
+    def getTeleporter(self, board : Board):
         teleporter = []
         for i in board.game_objects:
             if i.type == "TeleportGameObject":
                 teleporter.append(i)
-        
+        return teleporter
     
     def getResetButton(self,board : Board):
         for i in board.game_objects:
@@ -62,16 +61,11 @@ class BotZaki(BaseLogic):
         base_distance = abs(base.x - board_bot.position.x) + abs(base.y - board_bot.position.y)
 
         # logic
-        if board_bot.properties.milliseconds_left//1000 - 2 > base_distance:
+        if board_bot.properties.milliseconds_left//1000 - 1 > base_distance:
             if props.diamonds == 5:
                 # Move to base
                 self.goal_position = base
-            elif props.diamonds == 0:
-                if diamond_distance > reset_distance:
-                    self.goal_position = reset_coor.position
-                else:
-                    self.goal_position = diamond_coor.position
-            elif props.diamonds == 3:
+            elif props.diamonds >= 3:
                 if diamond_distance > base_distance and reset_distance > base_distance:
                     self.goal_position = base
                 elif diamond_distance > reset_distance:
@@ -84,7 +78,7 @@ class BotZaki(BaseLogic):
                 else:
                     self.goal_position = diamond_coor.position
         else:
-            self.goal_position = base
+            self.goal_position = base            
 
         delta_x, delta_y = get_direction(
             current_position.x,
@@ -92,4 +86,17 @@ class BotZaki(BaseLogic):
             self.goal_position.x,
             self.goal_position.y,
         )
+
+        teleporter = self.getTeleporter(board)
+        if teleporter[0].position.y == self.goal_position.y :
+            if current_position.y > teleporter[0].position.y :
+                return 0,-1
+            elif current_position.y < teleporter[0].position.y :
+                return 0,1
+        if teleporter[1].position.y == self.goal_position.y :
+            if current_position.y > teleporter[1].position.y :
+                return 0,-1
+            elif current_position.y < teleporter[1].position.y :
+                return 0,1
+
         return delta_x, delta_y
