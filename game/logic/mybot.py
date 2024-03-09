@@ -25,6 +25,8 @@ class MyBot(BaseLogic):
                 if self.getDistance(array_diamond[i], board_bot) < nearestDistance:
                     nearestDistance = self.getDistance(array_diamond[i], board_bot)
                     nearestDiamond = array_diamond[i]
+                if self.getDistance(array_diamond[i], board_bot) == nearestDistance and array_diamond[i].properties.points > nearestDiamond.properties.points:
+                    nearestDiamond = array_diamond[i]
         else:
             array_diamond = [diamonds for diamonds in board.diamonds]
             nearestDiamond = array_diamond[0]
@@ -32,6 +34,8 @@ class MyBot(BaseLogic):
             for i in range(1, len(array_diamond)):
                 if self.getDistance(array_diamond[i], board_bot) < nearestDistance:
                     nearestDistance = self.getDistance(array_diamond[i], board_bot)
+                    nearestDiamond = array_diamond[i]
+                if self.getDistance(array_diamond[i], board_bot) == nearestDistance and array_diamond[i].properties.points > nearestDiamond.properties.points:
                     nearestDiamond = array_diamond[i]
         return nearestDiamond
     
