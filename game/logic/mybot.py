@@ -18,6 +18,7 @@ class MyBot(BaseLogic):
     def getNearestDiamonds(self, board_bot : GameObject, board : Board):
         # Retrieve the nearest diamond coordinate
         if board_bot.properties.diamonds == 4:
+            # Case diamonds == 4
             array_diamond = [diamonds for diamonds in board.diamonds if diamonds.properties.points == 1]
             nearestDiamond = array_diamond[0]
             nearestDistance = self.getDistance(array_diamond[0], board_bot)
@@ -40,6 +41,7 @@ class MyBot(BaseLogic):
         return nearestDiamond
     
     def getTeleporter(self, board : Board):
+        # Retrieve teleporters data
         teleporter = []
         for i in board.game_objects:
             if i.type == "TeleportGameObject":
@@ -47,11 +49,13 @@ class MyBot(BaseLogic):
         return teleporter
     
     def getResetButton(self,board : Board):
+        # Retrieve reset button data
         for i in board.game_objects:
             if i.type == "DiamondButtonGameObject":
                 return i
 
     def next_move(self, board_bot : GameObject, board: Board):
+        # Input next move
         props = board_bot.properties
         current_position = board_bot.position
         # Finding each distance
@@ -92,6 +96,7 @@ class MyBot(BaseLogic):
         )
 
         teleporter = self.getTeleporter(board)
+        # Teleporter position handling
         if teleporter[0].position.y == self.goal_position.y and (current_position.y <= teleporter[0].position.y <= self.goal_position.y or current_position.y >= teleporter[0].position.y >= self.goal_position.y) :
             if current_position.x == teleporter[0].position.x :
                 if current_position.x == 0:
