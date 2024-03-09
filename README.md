@@ -33,3 +33,30 @@ Urutan Prioritas (By distance / Jarak)  :
 py main.py --logic MyBot --email=random@email.com --name=nama1 --password=123456 --team etimo
 ```
 3. Amati pergerakan bot
+
+## Susunan file
+```
+├───README.md
+│
+├───doc  
+│   ├─── Devil Tears.pdf
+│                      
+├───src                                             
+    ├── tubes1-IF2211-bot-starter-pack-1.0.1        
+        ├─── game
+             ├─── logic 
+                  ├─── MyBot.py
+                  ├─── random.py
+             ├─── __init__.py 
+             ├─── api.py 
+             ├─── board_handler.py 
+             ├─── bot_handler.py 
+             ├─── models.py 
+             ├─── util.py 
+        ├─── decode.py
+        ├─── main.py
+        ├─── README.md
+        ├─── requirements.txt
+        ├─── run-bots.bat
+        ├─── run-bots.sh
+```
