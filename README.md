@@ -1,6 +1,5 @@
 # Tugas Besar IF2211
 ## Implementasi Algoritma Greedy dalam Permainan Etimo Diamonds
-#
 Kelompok--Devil_Tears
 | NIM | Nama |
 | ------ | ------ |
@@ -15,9 +14,9 @@ Algoritma greedy merupakan algortima pemecahan masalah yang bersifat rakus. Algo
 ## Implementasi
 
 Urutan Prioritas (By distance / Jarak)  :
-> Diamonds
-> Reset Button 
-> Bila diamonds == 5 return to base
+1. Diamonds
+2. Reset Button 
+3. Bila diamonds == 5 return to base
 
 ## Requirements
 - Python 3.9.X
