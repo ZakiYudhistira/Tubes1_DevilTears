@@ -89,11 +89,21 @@ class BotZaki(BaseLogic):
 
         teleporter = self.getTeleporter(board)
         if teleporter[0].position.y == self.goal_position.y :
+            if current_position.x == teleporter[0].position.x :
+                if current_position.x == 0:
+                    return 1,0
+                else :
+                    return -1,0
             if current_position.y > teleporter[0].position.y :
                 return 0,-1
             elif current_position.y < teleporter[0].position.y :
                 return 0,1
         if teleporter[1].position.y == self.goal_position.y :
+            if current_position.x == teleporter[1].position.x :
+                if current_position.x == 0:
+                    return 1,0
+                else :
+                    return -1,0
             if current_position.y > teleporter[1].position.y :
                 return 0,-1
             elif current_position.y < teleporter[1].position.y :
