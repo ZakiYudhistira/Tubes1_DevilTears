@@ -41,7 +41,7 @@ py main.py --logic MyBot --email=random@email.com --name=nama1 --password=123456
 │   ├─── Devil Tears.pdf
 │                      
 ├───src                                             
-    ├── tubes1-IF2211-bot-starter-pack-1.0.1        
+    ├── bot        
         ├─── game
              ├─── logic 
                   ├─── MyBot.py
